@@ -1,5 +1,6 @@
-package adhoc;
+package cl.ucn.repository;
 
+import cl.ucn.domain.CleanData;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 

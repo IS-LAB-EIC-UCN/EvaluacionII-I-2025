@@ -1,6 +1,6 @@
 package vertx;
 
-import adhoc.RawData;
+import cl.ucn.domain.RawData;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -63,7 +63,8 @@ public class ReaderBDVerticle extends AbstractVerticle {
                         resultArray.add(new JsonObject()
                                 .put("variableType", reading.getType())
                                 .put("timestamp", reading.getTimestamp().toString())
-                                .put("value", reading.getValue()));
+                                .put("value", reading.getValue())
+                                .put("unit", reading.getUnit()));
                     }
 
                     promise.complete(resultArray);

@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
  * <ul>
  *   <li>{@code ReaderBDVerticle}: reads raw data (e.g., from database or memory)</li>
  *   <li>{@code ProducerBDVerticle}: publishes readings to the EventBus</li>
+ *   <li>{@code ValidatorFilterVerticle}, {@code UnitNormalizerFilterVerticle}, {@code ExtremeValueFilterVerticle}:
+ *       perform data filtering and transformation</li>
  *   <li>{@code FileStorageVerticle}: stores clean results</li>
  * </ul>
  *
@@ -46,12 +48,12 @@ public class MainVerticle extends AbstractVerticle {
 
         DeploymentOptions workerOptions = new DeploymentOptions().setWorker(true);
 
-        // Chain deployments of verticles in order
+        // Chain deployments of verticles in the correct order
         vertx.deployVerticle(new ReaderBDVerticle(), workerOptions)
                 .compose(id -> vertx.deployVerticle(new ProducerBDVerticle()))
-
-                // TODO: Add other filter and transformation verticles here
-
+                .compose(id -> vertx.deployVerticle(new ValidatorFilterVerticle()))
+                .compose(id -> vertx.deployVerticle(new UnitNormalizerFilterVerticle()))
+                .compose(id -> vertx.deployVerticle(new ExtremeValueFilterVerticle()))
                 .compose(id -> vertx.deployVerticle(new FileStorageVerticle()))
                 .onSuccess(id -> {
                     log.info("✅ Sistema de monitoreo iniciado.");

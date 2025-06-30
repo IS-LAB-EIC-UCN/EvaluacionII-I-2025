@@ -1,5 +1,12 @@
-package adhoc;
+package cl.ucn.ui;
 
+import cl.ucn.repository.CleanDataRepository;
+import cl.ucn.repository.RawDataRepository;
+import cl.ucn.service.RawDataProcessingService;
+import cl.ucn.service.filters.RawDataFilter;
+import cl.ucn.service.filters.ValidatorFilter;
+import cl.ucn.service.filters.UnitNormalizerFilter;
+import cl.ucn.service.filters.ExtremeValueFilter;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.slf4j.LoggerFactory;
@@ -48,9 +55,11 @@ public class Main {
         RawDataRepository rawRepo = new RawDataRepository(emf);
         CleanDataRepository cleanRepo = new CleanDataRepository(emf);
 
-        // TODO: Instantiate filters and replace `null` entries
+        // ✅ Instantiate filters in pipeline order
         List<RawDataFilter> filters = List.of(
-                null
+                new ValidatorFilter(),
+                new UnitNormalizerFilter(),
+                new ExtremeValueFilter()
         );
 
         // Create the processing service
@@ -63,6 +72,6 @@ public class Main {
             emf.close(); // Always close the factory
         }
 
-        log.info("✅ Procesamiento finalizado.");
+        log.info("Procesamiento finalizado.");
     }
 }

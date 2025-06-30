@@ -1,6 +1,6 @@
-package adhoc;
+package cl.ucn.service.filters;
 
-import adhoc.RawData;
+import cl.ucn.domain.RawData;
 
 /**
  * Defines a strategy interface for filtering or transforming {@link RawData} objects.

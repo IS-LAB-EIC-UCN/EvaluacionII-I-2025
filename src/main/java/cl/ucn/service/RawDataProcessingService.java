@@ -1,5 +1,10 @@
-package adhoc;
+package cl.ucn.service;
 
+import cl.ucn.service.filters.RawDataFilter;
+import cl.ucn.domain.CleanData;
+import cl.ucn.domain.RawData;
+import cl.ucn.repository.CleanDataRepository;
+import cl.ucn.repository.RawDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

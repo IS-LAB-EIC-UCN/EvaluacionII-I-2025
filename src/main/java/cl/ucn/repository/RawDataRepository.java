@@ -1,6 +1,9 @@
-package adhoc;
+package cl.ucn.repository;
 
+import cl.ucn.domain.RawData;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
 import java.util.List;
 
 /**
@@ -40,22 +43,23 @@ public class RawDataRepository {
     /**
      * Retrieves all raw data entries from the database.
      *
-     * <p><strong>Note:</strong> This method should be implemented by the student.
-     * It is expected to use a JPQL or Criteria query to fetch all {@link RawData} records.</p>
-     *
-     * @return a list of raw data records (to be implemented)
+     * @return a list of all raw data records in the database
      */
     public List<RawData> findAll() {
-        return null; // to be implemented by the student
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT r FROM RawData r", RawData.class).getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     /**
-     * Closes any internal resources if needed.
-     *
-     * <p><strong>Note:</strong> This method should be implemented by the student
-     * if resource cleanup (e.g., entity manager or factory closing) is required.</p>
+     * Closes the EntityManagerFactory if open.
      */
     public void close() {
-        // to be implemented by the student
+        if (emf.isOpen()) {
+            emf.close();
+        }
     }
 }
